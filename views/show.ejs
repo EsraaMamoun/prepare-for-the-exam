@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Search</title>
+</head>
+<body>
+    <header></header>
+    <main>
+        <% allBook.forEach(result => { %>
+            <section>
+                <img src="<%=result.imageLink%>">
+                <p><%=result.title%></p>
+                <p><%=result.authors%></p>
+                <p><%=result.description%></p>
+            </section>
+        <% }) %>
+    </main>
+    <footer></footer>
+</body>
+</html>

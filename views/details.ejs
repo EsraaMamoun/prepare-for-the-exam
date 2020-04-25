@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Details</title>
+</head>
+
+<body>
+    <main>
+        <img src=<%=aBook.image_url%>>
+        <p id="title"><%= aBook.title %></p>
+        <p id="authors"><%= aBook.author%></p>
+        <p id="description"><%= aBook.description %></p>
+        <p class="isbn">ISBN: <%= aBook.isbn%></p>
+        <p class="isbn">Bookshelf: <%= aBook.bookshelf%></p>
+
+
+<!-- ///////////////////////////////////////////////////////////////////////////////////////////// -->
+
+<form action="/update/<%=book.id%>?_method=put" method="post">
+    <label>
+        <p>Img_URL:</p>
+        <textarea name="image_url"><%=book.image_url%></textarea>
+    </label>
+    <label>
+        <p>Title:</p>
+        <input type="text" value="<%=book.title%>">
+    </label>
+    <label>
+        <p>Author:</p>
+        <input type="text" value="<%=book.author%>">
+    </label>
+    <label>
+        <p>Description:</p>
+        <textarea><%=book.description%></textarea>
+    </label>
+    <label> 
+        <p>ISBN:</p>
+        <input type="text" value="<%=book.isbn%>">
+    </label>
+    <label>
+        <b>Bookshelf:</b>
+        <input type="text" value="<%=book.bookshelf%>">
+    </label>
+    <button>Save</button>
+</form>
+    </main>
+</body>
+
+</html>

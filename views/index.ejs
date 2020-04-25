@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam</title>
+</head>
+<body>
+    <header></header>
+    <main>
+        <% books.forEach((results)=>{ %>
+            <section>
+            <img src="<%=results.image_url%>" width="200px" height="275px">
+            <p><%=results.title%></p>
+            <p><%=results.author%></p>
+            <p><%=results.description%></p>
+            <button><a href="/book/<%=results.id%>">View Details</a></button>
+        </section>
+        <% }) %>
+    </main>
+    <footer></footer>
+</body>
+</html>
