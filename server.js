@@ -208,7 +208,23 @@ app.get('/book/:id',(req,res)=>{
 
 //////////////////////////////////////////////////
 
-// app.put('/update/:id',)
+app.put('/update/:id', (req,res)=>{
+  const { author, title, isbn, image_url, description, bookshelf} = req.body;
+  const SQL = 'UPDATE exam SET author=$1, title=$2, isbn=$3, image_url=$4, description=$5, bookshelf=$6 WHERE id=$7';
+  const value = [author, title, isbn, image_url, description, bookshelf,req.params.id];
+  client.query(SQL,value).then((result)=>{
+    res.redirect(`/book/${req.params.id}`);
+  }).catch((err)=>errorHandler(err,req,res));
+})
+///////////////////////////////////////////////////
+
+app.delete('/delete/:id',(req,res)=>{
+  let SQL = 'DELETE FROM exam WHERE id=$1';
+  let value = [req.params.id];
+  client.query(SQL,value).then((result)=>{
+    res.redirect('/');
+  }).catch((err)=>errorHandler(err,req,res));
+})
 
 //////////////////////////////////////////////////
 

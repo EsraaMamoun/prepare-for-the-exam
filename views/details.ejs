@@ -19,33 +19,35 @@
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////////// -->
 
-<form action="/update/<%=book.id%>?_method=put" method="post">
+<form action="/update/<%=aBook.id%>?_method=put" method="post">
     <label>
         <p>Img_URL:</p>
-        <textarea name="image_url"><%=book.image_url%></textarea>
+        <textarea name="image_url"><%=aBook.image_url%></textarea>
     </label>
     <label>
         <p>Title:</p>
-        <input type="text" value="<%=book.title%>">
+        <input type="text" name="title" value="<%=aBook.title%>">
     </label>
     <label>
         <p>Author:</p>
-        <input type="text" value="<%=book.author%>">
+        <input type="text" name="author" value="<%=aBook.author%>">
     </label>
     <label>
         <p>Description:</p>
-        <textarea><%=book.description%></textarea>
+        <textarea name="description"><%=aBook.description%></textarea>
     </label>
     <label> 
         <p>ISBN:</p>
-        <input type="text" value="<%=book.isbn%>">
+        <input type="text" name="isbn" value="<%=aBook.isbn%>">
     </label>
     <label>
         <b>Bookshelf:</b>
-        <input type="text" value="<%=book.bookshelf%>">
+        <input type="text" name="bookshelf" value="<%=aBook.bookshelf%>">
     </label>
     <button>Save</button>
 </form>
+
+<form action="/delete/<%=aBook.id%>?_method=DELETE" method="post"><button>Delete</button></form>
     </main>
 </body>
 
