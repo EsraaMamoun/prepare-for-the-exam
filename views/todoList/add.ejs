@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Task</title>
+</head>
+
+<body>
+    <main>
+        <form action="/add" method="POST">
+            <fieldset>
+                <legend>Add a task</legend>
+                <input type="text" name="title" placeholder="Task" />
+                <textarea name="description" placeholder="Description of the task"></textarea>
+                <input type="text" name="category" placeholder="Category" />
+                <input type="text" name="contact" placeholder="Contact Person" />
+                <input type="hidden" name="status" value="not done" placeholder="status" />
+                <button>Add this Task</button>
+            </fieldset>
+        </form>
+    </main>
+</body>
+
+</html>

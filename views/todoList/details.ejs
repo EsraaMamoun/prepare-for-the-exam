@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Details</title>
+</head>
+
+<body>
+    <main>
+        <section>
+            <h4>Task: <%= result.title%></h4>
+            <p>description: <%= result.description%></p>
+            <p>Contact Person: <%= result.contact%></p>
+            <p>Status: <%= result.status%></p>
+            <p>Category: <%= result.category%></p>
+            <p>Complete on <%= result.due%></p>
+        </section>
+
+        <form action="/update/<%=result.id%>?_method=PUT" method="POST">
+            <fieldset>
+                <legend>Update a task</legend>
+                <input
+                  type="text"
+                  name="title"
+                  placeholder="Task"
+                  value="<%=result.title%>"
+                />
+                <textarea
+                  name="description"
+                  placeholder="Description of the task"
+                >
+            <%=result.description%>
+            </textarea
+                >
+                <input
+                  type="text"
+                  name="category"
+                  placeholder="Category"
+                  value="<%=result.category%>"
+                />
+                <input
+                  type="text"
+                  name="contact"
+                  placeholder="Contact Person"
+                  value="<%=result.contact%>"
+                />
+                <input name="status"
+                value="<%=result.status%>" placeholder="status" />
+                <button type="submit">Update this Task</button>
+              </fieldset>
+        </form>
+<form action="/delete/<%=result.id%>?_method=DELETE" method="POST">
+<button>DELETE THIS TASK</button>
+</form>
+    </main>
+</body>
+
+</html>

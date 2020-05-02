@@ -127,115 +127,472 @@
 // }
 
 // app.listen(PORT, ()=>console.log(`My app is listen on ${PORT}`));
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////
 
+// 'use strict';
+
+// require('dotenv').config();
+
+// const cors = require('cors');
+// const express = require('express');
+// const methodOverride = require('method-override');
+// const superagent = require('superagent');
+// const PORT = process.env.PORT || 4000;
+// const app = express();
+// app.use(cors());
+
+// const pg = require('pg');
+
+// const client = new pg.Client(process.env.DATABASE_URL);
+// client.on('error', (err) => console.log(err));
+
+// app.set('view engine', 'ejs');
+// app.use(express.urlencoded({ extended: true }));
+// app.use(methodOverride('_method'));
+// app.use('/public', express.static('public'));
+
+// //////////////////////////////////////////////////
+
+// app.get('/search', (req, res) => {
+//   res.render('search');
+// })
+
+// app.post('/showP', (req, res) => {
+//   const searchInput = req.body.theSearch;
+//   const radioValue = req.body.titleOrAouthor;
+//   superagent.get(`https://www.googleapis.com/books/v1/volumes?q=${searchInput}+in${radioValue}`)
+//     .then(data => {
+//       let allBook = data.body.items.map((book) => {
+//         return new Book(book);
+//       })
+//       res.render('show', { allBook: allBook });
+//     }).catch((err) => {
+//       errorHandler(err, req, res);
+//     });
+//   console.log(`The results from post: ${searchInput} and ${searchInput}`);
+// })
+
+// //////////////////////////////////////////////////
+
+// app.get('/', (req, res) => {
+//   let SQL = 'SELECT * FROM exam';
+//   client.query(SQL).then((result) => {
+//     res.render('index', { books: result.rows });
+//   }).catch((err) => errorHandler(err, req, res))
+// })
+
+// ///////////////////////////////////////////////////
+// //get Form
+// app.get('/add', (req, res) => {
+//   res.render('add');
+// })
+// //add
+// app.post('/add',(req,res)=>{
+//   const {author,title,isbn,image_url,description,bookshelf} = req.body;
+//   let SQL = 'INSERT INTO exam (author,title,isbn,image_url,description,bookshelf) VALUES ($1,$2,$3,$4,$5,$6)';
+//   let values = [author,title,isbn,image_url,description,bookshelf];
+//   client.query(SQL,values).then((result)=>{
+//     res.redirect('/');
+//   }).catch((err)=>errorHandler(err,req,res));
+// })
+
+// //////////////////////////////////////////////////
+// //View Details
+// app.get('/book/:id',(req,res)=>{
+//   const SQL = 'SELECT * FROM exam WHERE id=$1';
+//   const value = [req.params.id];
+//   client.query(SQL,value).then((result)=>{
+//     res.render('details', {aBook: result.rows[0]});
+//   }).catch((err)=>errorHandler(err,req,res));
+// })
+
+// //////////////////////////////////////////////////
+
+// app.put('/update/:id', (req,res)=>{
+//   const { author, title, isbn, image_url, description, bookshelf} = req.body;
+//   const SQL = 'UPDATE exam SET author=$1, title=$2, isbn=$3, image_url=$4, description=$5, bookshelf=$6 WHERE id=$7';
+//   const value = [author, title, isbn, image_url, description, bookshelf,req.params.id];
+//   client.query(SQL,value).then((result)=>{
+//     res.redirect(`/book/${req.params.id}`);
+//   }).catch((err)=>errorHandler(err,req,res));
+// })
+// ///////////////////////////////////////////////////
+
+// app.delete('/delete/:id',(req,res)=>{
+//   let SQL = 'DELETE FROM exam WHERE id=$1';
+//   let value = [req.params.id];
+//   client.query(SQL,value).then((result)=>{
+//     res.redirect('/');
+//   }).catch((err)=>errorHandler(err,req,res));
+// })
+
+// //////////////////////////////////////////////////
+
+// function Book(theBook) {
+//   this.imageLinks = theBook.volumeInfo.imageLinks.thumbnail;
+//   this.title = theBook.volumeInfo.title;
+//   this.authors = theBook.volumeInfo.authors;
+//   this.description = theBook.volumeInfo.description;
+// }
+
+// /////////////////////////////////////////////////
+
+// function errorHandler(err, req, res) {
+//   res.status(500).send(err);
+// }
+
+// app.get('*', notFound);
+
+// function notFound(req, res) {
+//   res.status(404).send('NOT FOUND !!')
+// }
+// client.connect().then(() => {
+//   app.listen(PORT, () => console.log(`My app listening on ${PORT}`));
+// });
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+// 'use strict';
+// require('dotenv').config();
+// const cors = require('cors');
+// const PORT = process.env.PORT || 4000;
+// const express = require('express');
+// const app = express();
+
+// app.use(cors());
+
+// const pg = require('pg');
+// const methodOverride = require('method-override');
+// const superagent = require('superagent');
+// const client = new pg.Client(process.env.DATABASE_URL);
+
+// client.on('error', (err) => console.log(err));
+
+// app.use(methodOverride('_method'));
+// app.set('view engine', 'ejs');
+
+// app.use(express.urlencoded({ extended: true }));
+// app.use('/public', express.static('public'));
+// /////////////////////////////////////////////
+
+// app.get('/search', (req, res) => {
+//   res.render('search');
+// });
+
+// app.post('/show', (req, res) => {
+//   let searchBtn = req.body.theSearch;
+//   let radioValue = req.body.titleOrAouthor;
+//   superagent(`https://www.googleapis.com/books/v1/volumes?q=${searchBtn}+in${radioValue}`)
+//     .then((books) => {
+//       let bookResults = books.body.items.map(book => {
+//         return new Book(book);
+//       })
+//       res.render('show', { allBook: bookResults });
+//     }).catch((err) => errorHandler(err, req, res));
+// });
+
+// //////////////////////////////////////////////
+
+// app.get('/', (req, res) => {
+//   let SQL = 'SELECT * FROM exam';
+//   client.query(SQL).then((result) => {
+//     res.render('index', { books: result.rows });
+//   }).catch((err) => errorHandler(err, req, res));
+// });
+
+// /////////////////////////////////////////////
+
+// app.get('/add', (req, res) => {
+//   res.render('add');
+// });
+
+// app.post('/add', (req, res) => {
+//   const { author, title, isbn, image_url, description, bookshelf } = req.body;
+//   const SQL = 'INSERT INTO exam (author,title,isbn,image_url,description,bookshelf) VALUES ($1,$2,$3,$4,$5,$6)';
+//   const values = [author, title, isbn, image_url, description, bookshelf];
+//   client.query(SQL, values).then((result) => {
+//     res.redirect('/');
+//   }).catch((err) => errorHandler(err, req, res));
+// });
+
+// //////////////////////////////////////////////
+
+// app.get('/book/:id',(req,res)=>{
+//   const SQL = 'SELECT * FROM exam WHERE id=$1';
+//   const value = [req.params.id];
+//   client.query(SQL,value).then((result)=>{
+//     res.render('details', {aBook:result.rows[0]});
+//   }).catch((err)=>errorHandler(err,req,res));
+// });
+
+// /////////////////////////////////////////////
+
+// app.put('/update/:id', (req,res)=>{
+//     const {author, title, isbn, image_url, description, bookshelf}=req.body;
+//     const SQL = 'UPDATE exam SET author=$1, title=$2, isbn=$3, image_url=$4, description=$5, bookshelf=$6 WHERE id=$7';
+//     const values = [author, title, isbn, image_url, description, bookshelf, req.params.id];
+//     client.query(SQL,values).then(result=>{
+//         res.redirect(`/book/${req.params.id}`);
+//     }).catch((err)=>errorHandler(err,req,res));
+// });
+
+// //////////////////////////////////////////////
+
+// app.delete('/delete/:id',(req,res)=>{
+//     const SQL = 'DELETE FROM exam WHERE id=$1';
+//     const value = [req.params.id];
+//     client.query(SQL,value).then(result=>{
+//         res.redirect('/');
+//     }).catch((err)=>errorHandler(err,req,res));
+// })
+
+
+// ////////////////////////////////////////////
+
+// // Wrooooooooooong
+// // app.post('/',(req,res)=>{
+// //     const theTitle=[req.body.title];
+// //     const {author, title, isbn, image_url, description, bookshelf} = req.body;
+// //     const SQL = 'INSERT INTO exam (author, title, isbn, image_url, description, bookshelf) VALUES (($1,$2,$3,$4,$5,$6)';
+// //     const value = [author, title, isbn, image_url, description, bookshelf];
+// //     const SQL2 = 'SELECT * FROM exam WHERE title=$1;';
+// //     client.query(SQL,value).then(()=>{})
+// //     return client.query(SQL2,theTitle)
+// //     .then((data)=>{
+// //         res.redirect(`/book/${data.rows[0].id}`);
+// //     })
+// // })
+
+// /////////////////////////////////////////////
+
+// function Book(theBook) {
+//   this.imageLinks = theBook.volumeInfo.imageLinks.thumbnail;
+//   this.title = theBook.volumeInfo.title;
+//   this.authors = theBook.volumeInfo.authors;
+//   this.description = theBook.volumeInfo.description;
+// }
+
+// ////////////////////////////////////////////
+// function errorHandler(err, req, res) {
+//   res.status(500).send(err);
+// }
+
+// function notFound(req, res) {
+//   res.status(404).send('NOT FOUND !!');
+// }
+
+// app.get('*', notFound);
+
+// client.connect().then(() => {
+//   app.listen(PORT, () => console.log(`My app listining on ${PORT}`))
+// });
+
+////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+
+
+// 'use strict';
+
+// require('dotenv').config();
+// const cors = require('cors');
+// const PORT = process.env.PORT || 4000;
+// const express = require('express');
+// const app = express();
+// app.use(cors());
+// const superagent = require('superagent');
+// const pg = require('pg');
+// const client = new pg.Client(process.env.DATABASE_URL);
+// client.on('error',(err)=>console.log(err));
+// app.set('view engine', 'ejs');
+// const methodOverride = require('method-override');
+// app.use(methodOverride('_method'));
+// app.use(express.urlencoded({extended:true}));
+// app.use('/public',express.static('public'));
+
+// /**************************************************** */
+
+// app.get('/search',(req,res)=>{
+//     res.render('search');
+// });
+
+// app.post('/show',(req,res)=>{
+//     const forSearch = req.body.theSearch;
+//     const forRadio = req.body.titleOrAouthor;
+//     superagent.get(`https://www.googleapis.com/books/v1/volumes?q=${forSearch}+in${forRadio}`)
+//     .then((result)=>{
+//         let allBook = result.body.items.map((book)=>{
+//             return new Book(book);
+//         })
+//         res.render('show', {allBook:allBook});
+//     }).catch((err)=>errorHandler(err,req,res));
+// })
+
+// ///////////////////////////////////////////////////////
+
+// app.get('/',(req,res)=>{
+//     const SQL = 'SELECT * FROM exam';
+//     client.query(SQL).then(result=>{
+//         res.render('index',{books:result.rows});
+//     }).catch((err)=>errorHandler(err,req,res));
+// })
+
+// /////////////////////////////////////////////////////////
+
+// app.get('/add',(req,res)=>{
+//     res.render('add');
+// })
+
+// app.post('/add',(req,res)=>{
+//     const {author, title, isbn, image_url, description, bookshelf} = req.body;
+//     const SQL = 'INSERT INTO exam (author, title, isbn, image_url, description, bookshelf) VALUES ($1,$2,$3,$4,$5,$6)';
+//     const Values = [author, title, isbn, image_url, description, bookshelf];
+//     client.query(SQL,Values).then((result)=>{
+//         res.redirect('/');
+//     }).catch((err)=>errorHandler(err,req,res));
+// })
+
+// //////////////////////////////////////////////////////
+
+// app.get('/book/:id',(req,res)=>{
+//     const SQL = 'SELECT * FROM exam WHERE id=$1';
+//     const value = [req.params.id];
+//     client.query(SQL,value).then((result)=>{
+//         res.render('details',{aBook:result.rows[0]});
+//     }).catch((err)=>{
+//         errorHandler(err,req,res);
+//     });
+// })
+
+// ///////////////////////////////////////////////////////
+
+// app.put('/update/:id',(req,res)=>{
+//     const {author, title, isbn, image_url, description, bookshelf} = req.body;
+//     const SQL = 'UPDATE exam SET  author=$1, title=$2, isbn=$3, image_url=$4, description=$5, bookshelf=$6 WHERE id=$7';
+//     const values = [author, title, isbn, image_url, description, bookshelf, req.params.id];
+//     client.query(SQL,values).then(result=>{
+//         res.redirect(`/book/${req.params.id}`);
+//     }).catch(err=>errorHandler(err,req,res));
+// })
+
+// //////////////////////////////////////////////////////
+
+// app.delete('/delete/:id',(req,res)=>{
+//     const SQL = 'DELETE FROM exam WHERE id=$1';
+//     const value = [req.params.id];
+//     client.query(SQL,value).then((result)=>{
+//         res.redirect('/');
+//     }).catch(err=>errorHandler(err,req,res));
+// })
+
+// /************************************************** */
+
+// function Book(theBook) {
+//   this.imageLinks = theBook.volumeInfo.imageLinks.thumbnail;
+//   this.title = theBook.volumeInfo.title;
+//   this.authors = theBook.volumeInfo.authors;
+//   this.description = theBook.volumeInfo.description;
+// }
+
+// /************************************************** */
+// function errorHandler(err,req,res) {
+//   res.status(500).send(err);
+// }
+// function notFounf(req,res) {
+//   res.status(404).send('NOT FOUND !!');
+// }
+// app.get('*',notFounf);
+// client.connect().then(()=>{
+//   app.listen(PORT,()=>console.log(`My app listening on ${PORT}`));
+// });
+
+//////////////////////////////TODO LIST//////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 
 'use strict';
-
 require('dotenv').config();
-
-const cors = require('cors');
-const express = require('express');
-const methodOverride = require('method-override');
-const superagent = require('superagent');
 const PORT = process.env.PORT || 4000;
+const express = require('express');
 const app = express();
-app.use(cors());
-
 const pg = require('pg');
-
+// const superagent = require('superagent');
+const methodOverride = require('method-override');
 const client = new pg.Client(process.env.DATABASE_URL);
-client.on('error', (err) => console.log(err));
 
-app.set('view engine', 'ejs');
-app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+app.use(express.urlencoded({ extended: true }));
 app.use('/public', express.static('public'));
 
-//////////////////////////////////////////////////
+app.set('view engine', 'ejs');
 
-app.get('/search', (req, res) => {
-  res.render('search');
-})
+//\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-app.post('/showP', (req, res) => {
-  const searchInput = req.body.theSearch;
-  const radioValue = req.body.titleOrAouthor;
-  superagent.get(`https://www.googleapis.com/books/v1/volumes?q=${searchInput}+in${radioValue}`)
-    .then(data => {
-      let allBook = data.body.items.map((book) => {
-        return new Book(book);
-      })
-      res.render('show', { allBook: allBook });
-    }).catch((err) => {
-      errorHandler(err, req, res);
-    });
-  console.log(`The results from post: ${searchInput} and ${searchInput}`);
-})
+app.get('/', getTasksFromDB);
+app.get('/tasks/:id', getOneTask);
+app.get('/add', formAdd);
+app.post('/add', addTask);
+app.put('/update/:id', updateTask);
+app.delete('/delete/:id', deleteTask);
 
-//////////////////////////////////////////////////
 
-app.get('/', (req, res) => {
-  let SQL = 'SELECT * FROM exam';
-  client.query(SQL).then((result) => {
-    res.render('index', { books: result.rows });
-  }).catch((err) => errorHandler(err, req, res))
-})
-
-///////////////////////////////////////////////////
-//get Form
-app.get('/add', (req, res) => {
-  res.render('add');
-})
-//add
-app.post('/add',(req,res)=>{
-  const {author,title,isbn,image_url,description,bookshelf} = req.body;
-  let SQL = 'INSERT INTO exam (author,title,isbn,image_url,description,bookshelf) VALUES ($1,$2,$3,$4,$5,$6)';
-  let values = [author,title,isbn,image_url,description,bookshelf];
-  client.query(SQL,values).then((result)=>{
-    res.redirect('/');
-  }).catch((err)=>errorHandler(err,req,res));
-})
-
-//////////////////////////////////////////////////
-//View Details
-app.get('/book/:id',(req,res)=>{
-  const SQL = 'SELECT * FROM exam WHERE id=$1';
-  const value = [req.params.id];
-  client.query(SQL,value).then((result)=>{
-    res.render('details', {aBook: result.rows[0]});
-  }).catch((err)=>errorHandler(err,req,res));
-})
-
-//////////////////////////////////////////////////
-
-app.put('/update/:id', (req,res)=>{
-  const { author, title, isbn, image_url, description, bookshelf} = req.body;
-  const SQL = 'UPDATE exam SET author=$1, title=$2, isbn=$3, image_url=$4, description=$5, bookshelf=$6 WHERE id=$7';
-  const value = [author, title, isbn, image_url, description, bookshelf,req.params.id];
-  client.query(SQL,value).then((result)=>{
-    res.redirect(`/book/${req.params.id}`);
-  }).catch((err)=>errorHandler(err,req,res));
-})
-///////////////////////////////////////////////////
-
-app.delete('/delete/:id',(req,res)=>{
-  let SQL = 'DELETE FROM exam WHERE id=$1';
-  let value = [req.params.id];
-  client.query(SQL,value).then((result)=>{
-    res.redirect('/');
-  }).catch((err)=>errorHandler(err,req,res));
-})
-
-//////////////////////////////////////////////////
-
-function Book(theBook) {
-  this.imageLinks = theBook.volumeInfo.imageLinks.thumbnail;
-  this.title = theBook.volumeInfo.title;
-  this.authors = theBook.volumeInfo.authors;
-  this.description = theBook.volumeInfo.description;
+function getTasksFromDB(req, res) {
+  const SQL = 'SELECT * FROM tasks;';
+  client.query(SQL).then((results) => {
+    res.render('todoList/index', { theResult: results.rows });
+  }).catch((err) => errorHandler(err, req, res));
 }
 
-/////////////////////////////////////////////////
+function getOneTask(req, res) {
+  const SQL = 'SELECT * FROM tasks WHERE id=$1;';
+  const values = [req.params.id];
+  client.query(SQL, values).then((data) => {
+    res.render('todoList/details', { result: data.rows[0] });
+  }).catch((err) => errorHandler(err, req, res));
+}
+
+function formAdd(req, res) {
+  res.render('todoList/add');
+}
+
+function addTask(req, res) {
+  const { title, description, contact, status, category } = req.body;
+  const SQL = 'INSERT INTO tasks (title,description,contact,status,category) VALUES ($1,$2,$3,$4,$5);';
+  const values = [title, description, contact, status, category];
+  client.query(SQL, values).then(() => {
+    res.redirect('/');
+  }).catch((err) => errorHandler(err, req, res));
+}
+
+function updateTask(req, res) {
+  const { title, description, category, contact, status } = req.body;
+  const SQL = 'UPDATE tasks SET title=$1,description=$2,category=$3,contact=$4,status=$5 WHERE id=$6';
+  const values = [title, description, category, contact, status, req.params.id];
+  client.query(SQL, values).then(() => {
+    res.redirect(`/tasks/${req.params.id}`);
+  }).catch((err) => errorHandler(err, req, res));
+}
+
+function deleteTask(req,res) {
+  const SQL = 'DELETE FROM tasks WHERE id=$1;';
+  const values = [req.params.id];
+  client.query(SQL,values).then(()=>{
+    res.redirect('/');
+  }).catch((err)=>errorHandler(err,req,res));
+}
+
+
+///////////////////////////////////////////////////////
+
+function notFound(req, res) {
+  res.status(404).send('NOT FOUND');
+}
 
 function errorHandler(err, req, res) {
   res.status(500).send(err);
@@ -243,9 +600,6 @@ function errorHandler(err, req, res) {
 
 app.get('*', notFound);
 
-function notFound(req, res) {
-  res.status(404).send('NOT FOUND !!')
-}
 client.connect().then(() => {
-  app.listen(PORT, () => console.log(`My app listening on ${PORT}`));
+  app.listen(PORT, () => console.log(`My app listining on ${PORT}`));
 });
