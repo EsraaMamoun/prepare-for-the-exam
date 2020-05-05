@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show Search</title>
+</head>
+<body>
+    <main>
+        <%results.forEach(data=>{%>
+            <section>
+                <p>Zodic Name: <%=data.name%></p>
+                <p>Famous People: <%=data.famous%></p>
+                <p>Hates: <%=data.hates%></p>
+                <p>Favorites: <%=data.favorites%></p>
+                <form action="/save" method="post">
+                    <input type="hidden" name="name" value="<%=data.name%>">
+                    <textarea name="famous" style="display: none;"><%=data.famous%></textarea>
+                    <textarea name="hates" style="display: none;"><%=data.hates%></textarea>
+                    <textarea name="favorites" style="display: none;"><%=data.favorites%></textarea>
+                    <button>Add To Favorite</button>
+                </form>
+            </section>
+            <p>___________________________________________________________________________________________________________________________________________________________</p>
+        <%})%>
+    </main>
+</body>
+</html>

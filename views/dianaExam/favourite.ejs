@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favourite</title>
+</head>
+<body>
+    <header>
+        <p>Results: <%=results.length%></p>
+        <p>___________________________________________________________________________________________________________________________________________________________</p>
+    </header>
+    <main>
+        <%results.forEach(data=>{%>
+            <section>
+                <p>Zodic Name: <%=data.name%></p>
+                <p>Famous People: <%=data.famous%></p>
+                <p>Hates: <%=data.hates%></p>
+                <p>Favorites: <%=data.favorites%></p>
+                <a href="/details/<%=data.id%>"><button>Show Details</button></a>
+            </section>
+            <p>___________________________________________________________________________________________________________________________________________________________</p>
+        <%})%>
+    </main>
+</body>
+</html>
