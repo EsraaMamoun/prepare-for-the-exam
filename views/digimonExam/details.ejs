@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Details</title>
+</head>
+<body>
+    <header></header>
+    <main>
+        <section>
+            <img src="<%=data.img%>">
+            <p>Digimon Name: <%=data.name%>.</p>
+            <p>Digimon level: <%=data.level%>.</p>
+        </section>
+        <form action="/update/<%=data.id%>?_method=put" method="post">
+            <textarea name="img"><%=data.img%></textarea>
+            <input type="text" name="name" value="<%=data.name%>">
+            <input type="text" name="level" value="<%=data.level%>">
+            <button>Update</button>
+        </form>
+        <form action="/delete/<%=data.id%>?_method=delete" method="post">
+            <button>Delete</button>
+        </form>
+    </main>
+</body>
+</html>

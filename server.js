@@ -609,118 +609,238 @@
 //////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
 
+// 'use strict';
+// require('dotenv').config();
+// const PORT = process.env.PORT || 4000;
+// const express = require('express');
+// const app = express();
+// const pg = require('pg');
+// const superagent = require('superagent');
+// const methodOverride = require('method-override');
+// const client = new pg.Client(process.env.DATABASE_URL);
+// client.on('error', (error) => console.log(error));
+
+// app.use(methodOverride('_method'));
+// app.use(express.urlencoded({ extended: true }));
+// app.use('/public', express.static('public'));
+// app.set('view engine', 'ejs');
+
+// //========================Routers===========================\\
+
+// app.get('/',homeHandler);
+// app.post('/save', addToDb);
+// app.get('/favorite', getDataFromDbForFavouritePage);
+// app.get('/details/:id', detailsHandler);
+// app.put('/update/:id_update', updateSection);
+// app.delete('/delete/:id_delete', deleteHandler);
+// app.get('/search', searchNew);
+// app.post('/show', showSearch);
+// app.get('*', notFound);
+
+// //========================Functions===========================\\
+// //Return Results From Superagent URL
+// function homeHandler(req,res) {
+//   const url = 'https://zodiacal.herokuapp.com/api';
+//   superagent(url).then((results)=>{
+//     const allResults = results.body.map(val=>{
+//       return new Zodic(val);
+//     })
+//     res.render('dianaExam/index', {results:allResults});
+//   }).catch((error)=>errorHandler(error,req,res))
+// }
+// //Get data to save in DataBase (Add to DataBase)
+// function addToDb(req,res) {
+//   let {name,famous,hates,favorites} = req.body;
+//   let SQL = 'INSERT INTO zodic (name,famous,hates,favorites) VALUES ($1,$2,$3,$4);';
+//   let values = [name,famous,hates,favorites];
+//   client.query(SQL,values).then(()=>{
+//     res.redirect('/favorite');
+//   }).catch((error)=>errorHandler(error,req,res));
+// }
+// //Show data which we saved in DataBase
+// function getDataFromDbForFavouritePage(req,res) {
+//   let SQL = 'SELECT * FROM zodic;';
+//   client.query(SQL).then((results)=>{
+//     res.render('dianaExam/favourite', {results:results.rows});
+//   }).catch((error)=>errorHandler(error,req,res));
+// }
+// //Get one section (details page)
+// function detailsHandler(req,res) {
+//   let SQL = 'SELECT * FROM zodic WHERE id=$1;';
+//   let value = [req.params.id];
+//   client.query(SQL,value).then((val)=>{
+//     res.render('dianaExam/details', {data:val.rows[0]});
+//   }).catch((error)=>errorHandler(error,req,res));
+// }
+// //Update specific section
+// function updateSection(req,res) {
+//   let theParam = req.params.id_update;
+//   let {name,famous,hates,favorites} = req.body;
+//   let SQL = 'UPDATE zodic SET name=$1,famous=$2,hates=$3,favorites=$4 WHERE id=$5;';
+//   let value = [name,famous,hates,favorites,theParam];
+//   client.query(SQL,value).then(()=>{
+//     res.redirect(`/details/${theParam}`);
+//   }).catch((error)=>errorHandler(error,req,res));
+// }
+// //Delete specific section
+// function deleteHandler(req,res) {
+//   const SQL = 'DELETE FROM zodic WHERE id=$1;';
+//   const val = [req.params.id_delete];
+//   client.query(SQL,val).then(()=>{
+//     res.redirect('/favorite');
+//   }).catch((error)=>errorHandler(error,req,res));
+// }
+// //Search new zodic
+// function searchNew(req,res) {
+//   res.render('dianaExam/search-new');
+// }
+// //Show search data
+// function showSearch(req,res) {
+//   superagent.get(`https://zodiacal.herokuapp.com/${req.body.theSearch}`)
+//     .then((result)=>{
+//       let zodicData = result.body.map((val)=>{
+//         return new Zodic(val);
+//       })
+//       res.render('dianaExam/show-search', {results:zodicData})
+//     }).catch((error)=>errorHandler(error,req,res));
+// }
+// //========================Constructor===========================\\
+// function Zodic(val) {
+//   this.name = val.name;
+//   this.famous = val.famous_people;
+//   this.hates = val.hates;
+//   this.favorites = val.favorites;
+// }
+// //========================Error Handler===========================\\
+// function notFound(req, res) {
+//   res.status(404).send('Page Not Found');
+// }
+// function errorHandler(error, request, response) {
+//   response.status(500).send(error);
+// }
+// //========================Listenning Port===========================\\
+// client.connect().then(()=>{
+//   app.listen(PORT, ()=>{
+//     console.log(`My app listinig on ${PORT}`);
+//   });
+// });
+
+///////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////
+////////////////////EXAM DIGIMON/////////////////////////////////
+////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+
 'use strict';
+
 require('dotenv').config();
-const PORT = process.env.PORT || 4000;
 const express = require('express');
 const app = express();
-const pg = require('pg');
+const PORT = process.env.PORT;
 const superagent = require('superagent');
+const pg = require('pg');
 const methodOverride = require('method-override');
 const client = new pg.Client(process.env.DATABASE_URL);
-client.on('error', (error) => console.log(error));
+client.on('error', (error)=>console.log(error));
 
 app.use(methodOverride('_method'));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended:true}));
 app.use('/public', express.static('public'));
 app.set('view engine', 'ejs');
-
-//========================Routers===========================\\
-
-app.get('/',homeHandler);
-app.post('/save', addToDb);
-app.get('/favorite', getDataFromDbForFavouritePage);
-app.get('/details/:id', detailsHandler);
-app.put('/update/:id_update', updateSection);
-app.delete('/delete/:id_delete', deleteHandler);
-app.get('/search', searchNew);
-app.post('/show', showSearch);
+//===============ROUTS==============\\
+app.get('/',homePage);
+app.post('/digimonData',saveInDb);
+app.get('/favourite', getDataFromDb);
+app.get('/details/:details_id', detailsOneDigimon);
+app.put('/update/:update_id', updateDigimon);
+app.delete('/delete/:delete_id', deleteDigimon);
+app.get('/search', searchHandler);
+app.post('/show', resultsSearch);
 app.get('*', notFound);
-
-//========================Functions===========================\\
-//Return Results From Superagent URL
-function homeHandler(req,res) {
-  const url = 'https://zodiacal.herokuapp.com/api';
-  superagent(url).then((results)=>{
-    const allResults = results.body.map(val=>{
-      return new Zodic(val);
-    })
-    res.render('dianaExam/index', {results:allResults});
-  }).catch((error)=>errorHandler(error,req,res))
-}
-//Get data to save in DataBase (Add to DataBase)
-function addToDb(req,res) {
-  let {name,famous,hates,favorites} = req.body;
-  let SQL = 'INSERT INTO zodic (name,famous,hates,favorites) VALUES ($1,$2,$3,$4);';
-  let values = [name,famous,hates,favorites];
-  client.query(SQL,values).then(()=>{
-    res.redirect('/favorite');
-  }).catch((error)=>errorHandler(error,req,res));
-}
-//Show data which we saved in DataBase
-function getDataFromDbForFavouritePage(req,res) {
-  let SQL = 'SELECT * FROM zodic;';
-  client.query(SQL).then((results)=>{
-    res.render('dianaExam/favourite', {results:results.rows});
-  }).catch((error)=>errorHandler(error,req,res));
-}
-//Get one section (details page)
-function detailsHandler(req,res) {
-  let SQL = 'SELECT * FROM zodic WHERE id=$1;';
-  let value = [req.params.id];
-  client.query(SQL,value).then((val)=>{
-    res.render('dianaExam/details', {data:val.rows[0]});
-  }).catch((error)=>errorHandler(error,req,res));
-}
-//Update specific section
-function updateSection(req,res) {
-  let theParam = req.params.id_update;
-  let {name,famous,hates,favorites} = req.body;
-  let SQL = 'UPDATE zodic SET name=$1,famous=$2,hates=$3,favorites=$4 WHERE id=$5;';
-  let value = [name,famous,hates,favorites,theParam];
-  client.query(SQL,value).then(()=>{
-    res.redirect(`/details/${theParam}`);
-  }).catch((error)=>errorHandler(error,req,res));
-}
-//Delete specific section
-function deleteHandler(req,res) {
-  const SQL = 'DELETE FROM zodic WHERE id=$1;';
-  const val = [req.params.id_delete];
-  client.query(SQL,val).then(()=>{
-    res.redirect('/favorite');
-  }).catch((error)=>errorHandler(error,req,res));
-}
-//Search new zodic
-function searchNew(req,res) {
-  res.render('dianaExam/search-new');
-}
-//Show search data
-function showSearch(req,res) {
-  superagent.get(`https://zodiacal.herokuapp.com/${req.body.theSearch}`)
-    .then((result)=>{
-      let zodicData = result.body.map((val)=>{
-        return new Zodic(val);
+//===============FUNCTIONS==============\\
+//Render Home Page
+function homePage(req,res) {
+  superagent.get('https://digimon-api.herokuapp.com/api/digimon')
+    .then((data)=>{
+      let allDigimon = data.body.map((val)=>{
+        return new Digimon(val);
       })
-      res.render('dianaExam/show-search', {results:zodicData})
-    }).catch((error)=>errorHandler(error,req,res));
+      res.render('digimonExam/index', {results:allDigimon});
+    }).catch((err)=>errorHandler(err,req,res));
 }
-//========================Constructor===========================\\
-function Zodic(val) {
-  this.name = val.name;
-  this.famous = val.famous_people;
-  this.hates = val.hates;
-  this.favorites = val.favorites;
+//Save Into Database
+function saveInDb(req,res) {
+  let {name,img,level} = req.body;
+  let SQL = 'INSERT INTO digimon (name,img,level) VALUES ($1,$2,$3);';
+  let values = [name,img,level];
+  client.query(SQL,values).then(()=>{
+    res.redirect('/favourite');
+  }).catch((err)=>errorHandler(err,req,res));
 }
-//========================Error Handler===========================\\
-function notFound(req, res) {
-  res.status(404).send('Page Not Found');
+//Get Data That We Saved In Database
+function getDataFromDb(req,res) {
+  let SQL = 'SELECT * FROM digimon;';
+  client.query(SQL).then((data)=>{
+    res.render('digimonExam/favourite', {results:data.rows});
+  }).catch((err)=>errorHandler(err,req,res));
 }
-function errorHandler(error, request, response) {
+//Details For One Digimon's
+function detailsOneDigimon(req,res) {
+  let SQL = 'SELECT * FROM digimon WHERE id=$1;';
+  let value = [req.params.details_id];
+  client.query(SQL,value).then((result)=>{
+    res.render('digimonExam/details', {data:result.rows[0]});
+  }).catch((err)=>errorHandler(err,req,res));
+}
+//Update Digimon's Data
+function updateDigimon(req,res) {
+  let {name,img,level} = req.body;
+  let SQL = 'UPDATE digimon SET name=$1,img=$2,level=$3 WHERE id=$4;';
+  let values = [name,img,level,req.params.update_id];
+  client.query(SQL,values).then(()=>{
+    res.redirect(`/details/${req.params.update_id}`);
+  }).catch((err)=>errorHandler(err,req,res));
+}
+//Delete Digimon's
+function deleteDigimon(req,res) {
+  let SQL = 'DELETE FROM digimon WHERE id=$1;';
+  let value = [req.params.delete_id];
+  client.query(SQL,value).then(()=>{
+    res.redirect('/favourite');
+  }).catch((err)=>errorHandler(err,req,res));
+}
+//Search Digimons Page
+function searchHandler(req,res) {
+  res.render('digimonExam/search');
+}
+//Search Digimons Results
+function resultsSearch(req,res) {
+  let textInput = req.body.theSearch;
+  let radioInput = req.body.searchBy;
+  superagent(`https://digimon-api.herokuapp.com/api/digimon/${radioInput}/${textInput}`)
+    .then((results)=>{
+      let searchDigimon = results.body.map((data)=>{
+        return new Digimon(data);
+      });
+      res.render('digimonExam/show-search', {results:searchDigimon});
+    }).catch((err)=>errorHandler(err,req,res));
+}
+//===============CONSTRUCTOR==============\\
+function Digimon(digimon) {
+  this.name = digimon.name;
+  this.img = digimon.img;
+  this.level = digimon.level;
+}
+//===============ERROR HANDLER==============\\
+function notFound(req,res) {
+  res.status(404).send('PAGE NOT FOUND!!');
+}
+function errorHandler(error,request,response) {
   response.status(500).send(error);
 }
-//========================Listenning Port===========================\\
+//===============CONNECT CLIENT AND LISTINNING APP==============\\
 client.connect().then(()=>{
   app.listen(PORT, ()=>{
-    console.log(`My app listinig on ${PORT}`);
+    console.log(`My app listining on ${PORT}`);
   });
 });

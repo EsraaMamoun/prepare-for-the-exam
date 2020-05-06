@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show Search</title>
+</head>
+<body>
+    <header>
+        Results: <%=results.length%>
+    </header>
+    <main>
+        <%results.forEach((data)=>{%>
+            <section>
+                <img src="<%=data.img%>">
+                <p>Digimon Name: <%=data.name%>.</p>
+                <p>Digimon level: <%=data.level%>.</p>
+                <form action="/digimonData" method="post">
+                    <textarea name="img" style="display: none;"><%=data.img%></textarea>
+                    <input type="hidden" name="name" value="<%=data.name%>">
+                    <input type="hidden" name="level" value="<%=data.level%>">
+                    <button>Add To Favourite</button>
+                </form>
+            </section>
+        <%})%>
+    </main>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favorite</title>
+</head>
+<body>
+    <header>
+        Results: <%=results.length%>
+    </header>
+    <main>
+        <%results.forEach((data)=>{%>
+            <section>
+                <img src="<%=data.img%>">
+                <p>Digimon Name: <%=data.name%>.</p>
+                <p>Digimon level: <%=data.level%>.</p>
+                <a href="/details/<%=data.id%>"><button>Show Details</button></a>
+            </section>
+        <%})%>
+    </main>
+</body>
+</html>
