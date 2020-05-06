@@ -756,6 +756,8 @@ app.put('/update/:update_id', updateDigimon);
 app.delete('/delete/:delete_id', deleteDigimon);
 app.get('/search', searchHandler);
 app.post('/show', resultsSearch);
+app.get('/add', getAddForm);
+app.post('/add', addNewDigimon);
 app.get('*', notFound);
 //===============FUNCTIONS==============\\
 //Render Home Page
@@ -824,6 +826,19 @@ function resultsSearch(req,res) {
       });
       res.render('digimonExam/show-search', {results:searchDigimon});
     }).catch((err)=>errorHandler(err,req,res));
+}
+//Add New Digimon (Get The Form)
+function getAddForm(req,res) {
+  res.render('digimonExam/add');
+}
+//Add New Digimon
+function addNewDigimon(req,res) {
+  let {name,img,level} = req.body;
+  let SQL = 'INSERT INTO digimon (name,img,level) VALUES ($1,$2,$3);';
+  let value = [name,img,level];
+  client.query(SQL,value).then(()=>{
+    res.redirect('/favourite');
+  }).catch((err)=>errorHandler(err,req,res));
 }
 //===============CONSTRUCTOR==============\\
 function Digimon(digimon) {
